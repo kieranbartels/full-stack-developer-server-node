@@ -23,7 +23,7 @@ const createTuit = (req, res) => {
     newTuit.disliked = false;
     newTuit.verified = false;
     newTuit.handle = "Elmo";
-    //newTuit["avatar-image"] = "../../../images/react-blue.png";
+    newTuit["avatar-image"] = "../../../images/elmo.jpg";
     newTuit.likes = 0;
     newTuit.dislikes = 0;
     newTuit.comments = 0;
