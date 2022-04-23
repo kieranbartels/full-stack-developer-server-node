@@ -1,22 +1,32 @@
+import mongoose from 'mongoose';
 import express from 'express';
+import session from 'express-session';
+const app = express();
+const DB_USERNAME = process.env.DB_USERNAME
+const DB_PASSWORD = process.env.DB_PASSWORD
+mongoose.connect('mongodb://localhost:27017/cs4550-sp22');
+
 import cors from 'cors';
-import helloController
-    from "./controllers/hello-controller.js";
-import userController
-    from "./controllers/user-controller.js";
+app.use(cors({
+    credentials: true,
+    origin: 'http://localhost:3000'
+}));
+app.use(express.json());
+const sess = {
+    secret: 'keyboard cat', // TODO: move this to environment variable
+    cookie: {}
+}
+if (app.get('env') === 'production') {
+    app.set('trust proxy', 1) // trust first proxy
+    sess.cookie.secure = true // serve secure cookies
+}
+app.use(session(sess))
+
 import tuitsController
     from "./controllers/tuits-controller.js";
-
-import mongoose from 'mongoose';
-const CONNECTION_STRING = process.env.DB_CONNECTION_STRING
-    || 'mongodb://localhost:27017/webdev'
-mongoose.connect(CONNECTION_STRING);
-
-const app = express();
-app.use(cors());
-app.use(express.json());
-helloController(app);
-userController(app);
 tuitsController(app);
-app.get('/', (req, res) => {res.send('Welcome to Full Stack Development!')})
-app.listen(process.env.PORT || 4000);
+import userController
+    from "./controllers/user-controller.js";
+userController(app);
+
+app.listen(4000);

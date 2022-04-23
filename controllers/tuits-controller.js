@@ -1,5 +1,4 @@
 import * as tuitsDao from "./tuits/tuits-dao.js";
-import userController from "./user-controller.js";
 
 const tuitsController = (app) => {
     app.get('/api/tuits', findAllTuits);
