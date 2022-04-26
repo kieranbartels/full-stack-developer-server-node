@@ -1,9 +1,12 @@
 import * as tuitsDao from "./tuits/tuits-dao.js";
+import authController
+    from "./auth-controller.js";
+import * as usersDao from "./users/users-dao.js";
 
 const tuitsController = (app) => {
     app.get('/api/tuits', findAllTuits);
+    app.get('/api/tuits', findAllUserTuits);
     app.post('/api/tuits', createTuit);
-    app.get('/api/tuits', findAllTuits);
     app.put('/api/tuits/:tid', updateTuit);
     app.delete('/api/tuits/:tid', deleteTuit);
 }
@@ -13,20 +16,14 @@ const findAllTuits = async (req, res) => {
     res.json(tuits);
 }
 
+const findAllUserTuits = async (req, res) => {
+    const handle = req.params.handle;
+    const tuits = await tuitsDao.findAllUserTuits(handle)
+    res.json(tuits);
+}
+
 const createTuit = async (req, res) => {
     const newTuit = req.body;
-    newTuit.postedBy = {};
-    newTuit.postedBy.username = "Elmo";
-    newTuit.topic = "Web Development";
-    newTuit.liked = false;
-    newTuit.disliked = false;
-    newTuit.verified = false;
-    newTuit.handle = "elmo";
-    newTuit["avatar-image"] = "../../../images/elmo.jpg";
-    newTuit.likes = 0;
-    newTuit.dislikes = 0;
-    newTuit.comments = 0;
-    newTuit.retuits = 0;
     const insertedTuit = await tuitsDao.createTuit(newTuit);
     res.json(newTuit);
 }

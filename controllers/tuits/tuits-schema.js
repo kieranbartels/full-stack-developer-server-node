@@ -2,15 +2,19 @@ import mongoose from 'mongoose';
 const tuitsSchema = mongoose.Schema({
     tuit: String,
     likes: Number,
-    postedBy: {
-        username: String
-    },
+    firstName: String,
+    lastName: String,
     dislikes: Number,
     comments: Number,
     retuits: Number,
     handle: String,
     "avatar-image": String,
     liked: Boolean,
-    disliked: Boolean
+    disliked: Boolean,
+    role: {
+        type: String,
+        enum : ['user','admin'],
+        default: 'user'
+    }
 }, {collection: 'tuits'});
 export default tuitsSchema;

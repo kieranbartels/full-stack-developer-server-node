@@ -38,13 +38,13 @@ const deleteUser = async (req, res) => {
 const updateUser = async (req, res) => {
     const userId = req.params.id
     const updatedUser = req.body
-    const status = await usersDao.updateUser(
+    const newUser = await usersDao.updateUser(
         userId,
         updatedUser
     )
-    res.json(status)
+    req.session['currentUser'] = updatedUser
+    res.json(updatedUser)
 }
-
 const signup = async (req, res) => {
     const user = req.body
     const existingUser = await usersDao
