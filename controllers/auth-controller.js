@@ -1,16 +1,13 @@
 import * as usersDao from "./users/users-dao.js";
-
 const users = [];
-import * as userDao from "./users/users-dao.js";
-import * as tuitsDao from "./tuits/tuits-dao.js";
 
 const signup = async (req, res) => {
     const credentials = req.body;
-    const existingUser = await userDao.findUserByEmail(credentials.email)
+    const existingUser = await usersDao.findUserByEmail(credentials.email)
     if(existingUser) {
         return res.sendStatus(403)
     } else {
-        const newUser = await userDao.createUser(credentials)
+        const newUser = await usersDao.createUser(credentials)
         req.session['profile'] = newUser
         res.json(newUser)
     }
@@ -18,7 +15,7 @@ const signup = async (req, res) => {
 
 const login = async (req, res) => {
     const credentials = req.body;
-    const profile = await userDao
+    const profile = await usersDao
         .findUserByCredentials(credentials.email, credentials.password)
     if (profile) {
         req.session['profile'] = profile;
@@ -37,8 +34,9 @@ const profile = (req, res) => {
     }
 }
 
-const findUsers = (req, res) => {
-    res.json(users);
+const findAllUsers = async (req, res) => {
+    const users = await usersDao.findAllUsers()
+    res.json(users)
 }
 
 const updateUser = async (req, res) => {
@@ -56,7 +54,7 @@ const authController = (app) => {
     app.post('/api/signup', signup);
     app.post('/api/profile', profile);
     app.post('/api/signin', login);
-    app.get('/api/users', findUsers);
+    app.get('/api/users', findAllUsers);
     app.put('/api/updateUser/:id', updateUser);
 }
 
