@@ -1,9 +1,10 @@
 import * as usersDao from './users/users-dao.js';
 
 const findAllUsers = async (req, res) => {
-    const users = await usersDao.findAllUsers()
-    res.json(users)
-}
+    const users = await usersDao.findAllUsers();
+    res.json(users);
+};
+
 const findUserById = async (req, res) => {
     const userId = req.params['id']
     const user = await usersDao.findUserById(userId)

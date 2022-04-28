@@ -35,9 +35,10 @@ const profile = (req, res) => {
 }
 
 const findAllUsers = async (req, res) => {
-    const users = await usersDao.findAllUsers()
-    res.json(users)
-}
+    const users = await usersDao.findAllUsers();
+    res.header("Access-Control-Allow-Origin", "*");
+    res.json(users);
+};
 
 const updateUser = async (req, res) => {
     const userId = req.params.id
@@ -54,7 +55,7 @@ const authController = (app) => {
     app.post('/api/signup', signup);
     app.post('/api/profile', profile);
     app.post('/api/signin', login);
-    app.get('/api/users', findAllUsers);
+    // app.get('/api/users', findAllUsers);
     app.put('/api/updateUser/:id', updateUser);
 }
 
