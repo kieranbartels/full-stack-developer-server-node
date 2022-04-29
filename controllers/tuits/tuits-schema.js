@@ -1,20 +1,14 @@
 import mongoose from 'mongoose';
+import usersModel from '../users/users-model.js';
+
 const tuitsSchema = mongoose.Schema({
     tuit: String,
+    _user: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
     likes: Number,
-    firstName: String,
-    lastName: String,
     dislikes: Number,
     comments: Number,
     retuits: Number,
-    handle: String,
-    "avatar-image": String,
     liked: Boolean,
     disliked: Boolean,
-    role: {
-        type: String,
-        enum : ['user','admin'],
-        default: 'user'
-    }
 }, {collection: 'tuits'});
 export default tuitsSchema;

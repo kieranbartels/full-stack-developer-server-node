@@ -25,6 +25,11 @@ const login = async (req, res) => {
     res.sendStatus(403);
 }
 
+const logout = (req, res) => {
+    req.session.destroy();
+    res.sendStatus(200);
+}
+
 const profile = (req, res) => {
     const profile = req.session['profile']
     if(profile) {
@@ -34,11 +39,12 @@ const profile = (req, res) => {
     }
 }
 
-const findAllUsers = async (req, res) => {
-    const users = await usersDao.findAllUsers();
-    res.header("Access-Control-Allow-Origin", "*");
-    res.json(users);
-};
+const findUserByHandle = async (req, res) => {
+    console.log("here")
+    const userHandle = req.params.handle
+    const user = await usersDao.findUserByHandle(userHandle)
+    res.json(user)
+}
 
 const updateUser = async (req, res) => {
     const userId = req.params.id
@@ -55,8 +61,9 @@ const authController = (app) => {
     app.post('/api/signup', signup);
     app.post('/api/profile', profile);
     app.post('/api/signin', login);
-    // app.get('/api/users', findAllUsers);
+    app.post('/api/logout', logout);
     app.put('/api/updateUser/:id', updateUser);
+    app.get('/api/userinfo/:handle', findUserByHandle);
 }
 
 export default authController;
