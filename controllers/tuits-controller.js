@@ -1,11 +1,8 @@
 import * as tuitsDao from "./tuits/tuits-dao.js";
-import authController
-    from "./auth-controller.js";
-import * as usersDao from "./users/users-dao.js";
 
 const tuitsController = (app) => {
     app.get('/api/tuits', findAllTuits);
-    app.get('/api/tuits/:handle', findAllUserTuits);
+    app.get('/api/tuits/:id', findAllUserTuits);
     app.post('/api/tuits', createTuit);
     app.put('/api/tuits/:tid', updateTuit);
     app.delete('/api/tuits/:tid', deleteTuit);
@@ -17,8 +14,8 @@ const findAllTuits = async (req, res) => {
 }
 
 const findAllUserTuits = async (req, res) => {
-    const handle = req.params.handle;
-    const tuits = await tuitsDao.findAllUserTuits(handle)
+    const id = req.params.id;
+    const tuits = await tuitsDao.findAllUserTuits(id)
     res.json(tuits);
 }
 
